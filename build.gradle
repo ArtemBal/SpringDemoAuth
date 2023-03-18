@@ -26,6 +26,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.4'
+    implementation 'com.auth0:java-jwt:3.18.2'
 }
 
 tasks.named('test') {

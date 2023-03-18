@@ -2,11 +2,12 @@ package com.example.springdemoauth.service;
 
 import com.example.springdemoauth.dao.ClientEntity;
 import com.example.springdemoauth.dao.ClientRepository;
+import com.example.springdemoauth.exception.LoginException;
+import com.example.springdemoauth.exception.RegistrationException;
 import lombok.RequiredArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import javax.security.auth.login.LoginException;
 import java.util.Optional;
 
 @Service
@@ -26,12 +27,11 @@ public class DefaultClientService implements ClientService{
     public void checkCredentials(String clientId, String clientSecret) {
         Optional<ClientEntity> optionalUserEntity = userRepository.findById(clientId);
         if(optionalUserEntity.isEmpty())
-            throw new LoginException(
-                    "Client with id: " + clientId + " not found");
+            throw new LoginException("Client with id: " + clientId + " not found");
 
         ClientEntity clientEntity = optionalUserEntity.get();
 
-        if(BCrypt.checkpw(clientSecret, clientEntity.getHash()))
+        if(!BCrypt.checkpw(clientSecret, clientEntity.getHash()))
             throw new LoginException("Secret is incorrect");
 
     }
